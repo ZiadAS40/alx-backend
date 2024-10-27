@@ -1,10 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 making a helper funcion for the paginaiton
 """
+from typing import Tuple
 
 
-def index_range(page, page_size):
+def index_range(page: int, page_size: int) -> Tuple[int, int]:
     """
     return a tuple of size two containing a start index
     and an end indexcorresponding to the range of indexes
