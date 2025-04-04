@@ -1,10 +1,9 @@
 #!/usr/bin/yarn dev
-import {createClient, print} from 'redis';
+import { createClient } from 'redis';
 
-const client = createClient({
-    host: 'localhost',
-});
+const client = createClient();
+
 
 client.connect()
     .then(r => console.log('Redis client connected to the server'))
-    .catch(error => console.log('Redis client not connected to the server:', err.message));
+    .catch(error => console.log('Redis client not connected to the server:', error));

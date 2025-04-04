@@ -1,32 +1,24 @@
-#!/usr/bin/yarn dev
-import {createClient, print} from 'redis';
+import { createClient } from "redis";
 
 const client = createClient();
 
 client.connect()
-    .then(res => {
-      console.log('Redis client connected to the server');
-      const hashObj = {
-        'Portland': 50,
-        'New York': 20,
-        'Seattle': 80,
-        'Bogota': 20,
-        'Cali': 40,
-        'Paris': 2,
-      };
-      for (const [field, value] of Object.entries(hashObj)) {
-        setHashTableData('HolbertonSchools', field, value);
-      }
-      displayHashTableData('HolbertonSchools');
-    })
-    .catch(error => console.log('Redis client not connected to the server:', error.message));
+.then(_ => console.log('Redis client connected to the server'))
+.catch(error => console.log('Redis client not connected to the server:', error));
 
-const setHashTableData = (hashName, fieldName, fieldValue) => {
-  client.hSet(hashName, fieldName, fieldValue, print)
-      .then(res => console.log(`Reply: ${res}`));
+const hashes = {
+    "Portland":50,
+    "Seattle":80,
+    "New York":20,
+    "Bogota":20,
+    "Cali":40,
+    "Paris":2
 };
 
-const displayHashTableData = (name) => {
-  client.hGetAll(name)
-      .then(res => console.log(JSON.parse(JSON.stringify(res))));
-};
+
+for (const [k, v] of Object.entries(hashes)) {
+    client.hSet("ALX", k, v)
+        .then(r => console.log(`Replay: ${r}`));
+}
+
+client.hGetAll("ALX").then(r => console.log(Object.assign({}, r)));

@@ -1,22 +1,27 @@
 #!/usr/bin/yarn dev
-import {createClient} from 'redis';
+import { createClient } from 'redis';
 
-const client = createClient({});
+const client = createClient();
 
-client.connect()
-    .then(res => console.log('Redis client connected to the server'))
-    .catch(error => console.log('Redis client not connected to the server:', error.toString()));
 
-const channel = 'holberton school channel';
+async function main() {
+    try {
+        await client.connect();
+        console.log('Redis client connected to the server');
+        
+        await publishMessage("ALX Student #1 starts course", 100);
+        await publishMessage("ALX Student #2 starts course", 200);
+        await publishMessage("KILL_SERVER", 300);
+        await publishMessage("ALX Student #3 starts course", 400);
+    } catch (error) {
+        console.log('Redis client not connected to the server:', error);
+    }
+}
 
-const publishMessage = (msg, time) => {
-  setTimeout(() => {
-    console.log(`About to send ${msg}`);
-    client.publish(channel, msg);
-  }, time);
+
+async function publishMessage(message, time) {
+    await new Promise(res => setTimeout(() => res(console.log(`about to sent ${message}`), time)));
+    await client.publish("ALX", message);
 };
 
-publishMessage("Holberton Student #1 starts course", 100);
-publishMessage("Holberton Student #2 starts course", 200);
-publishMessage("KILL_SERVER", 300);
-publishMessage("Holberton Student #3 starts course", 400);
+main();
