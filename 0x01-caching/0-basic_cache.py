@@ -6,6 +6,7 @@ BaseCaching.
 
 from base_caching import BaseCaching
 
+
 class BasicCache (BaseCaching):
     """
     simple cache class
@@ -25,5 +26,5 @@ class BasicCache (BaseCaching):
         """
         if key is None or key not in self.cache_data:
             return
-        
+
         return self.cache_data[key]
